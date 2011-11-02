@@ -1,8 +1,16 @@
-YACG Is/Was a free content generator for your general SEO usage.
+YACG Is/Was a free content generator for general SEO usage.
 
+
+========= DESCRIPTION ========
 Based in php, YACG is quite easy to use and implement.
+Since http://getyacg.com is no longer hosting it, I had to put this somewhere, to share.
 
+========= LICENSE =========
 [YACG] by busin3ss/Vladimir is licensed under the
 Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License
 
-Since http://getyacg.com is no longer hosting it, I had to put this somewhere, to share.
+Therefore, you and I are both free to share, copy, distribute, and transmit the work.
+
+========= Addons/Hooks/Themes/Mods =========
+You should create a separate repo for any addons, themes, hooks, or mods you wish to
+share and feel free to contact me so that I can mention them here in the README.
