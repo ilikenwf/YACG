@@ -1,0 +1,89 @@
+<?php //CONFIG FILE
+
+////////////////////////////////////////////////////////////////////
+//////////////////////////// OBLIGATORY ////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+$version = '2.0b'; // [YACG] Yet Another Content Generator Version
+// MAIN CONFIGURATION
+define('THIS_DOMAIN', 'yourdomain.tdl'); // THE URL OF YOUR SITE (NO HTTP:// OR TRAILING SLASH)
+// -- Examples:
+// -- www.domain.com
+// -- domain.com
+// -- domain.com/yacg/
+define('SITE_NAME', 'Your Site'); // SITE NAME
+define('SITE_DESCRIPTION', 'Your description'); // DESCRIPTION OF YOUR SITE
+define('PASSWORD', '12345'); // ADMIN PASSWORD
+define('EMAIL', 'your@email.com'); // ADMIN EMAIL (FOR CONTACT-US.PHP)
+define('FLICKR_API', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // FLICKR API
+define('YAHOO_API', 'XXXXXXXXXXXXXXXXXXXXXXX'); // YAHOO API
+define('CACHE', true); // CACHE CONTROL
+// -- true = CACHE ON
+// -- false = CACHE OFF
+define('CACHE_TIME','2592000'); // CACHE EXPIRE TIME (IN SECONDS)
+define('USER_AGENT','Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1)Gecko/20061010 Firefox/2.0'); // USER-AGENT USED TO SCRAPE CONTENT
+define('DEBUG', true); // SET DEBUG MODE ON OR OFF
+// -- true = VERBOSE ERROR OUTPUT
+// -- false = NO ERROR OUTPUT
+define('SHOW_ADS', true); // SET TO DISPLAY OR NOT ADS
+// -- true = DISPLAY ADS
+// -- false = DO NOT DISPLAY ADS
+// DEFINE FILE LOCATIONS
+define('LOCAL_CACHE', './cache/'); // LOCATION OF THE CACHE
+define('LOCAL_ARTICLES', './articles/'); // LOCATION OF THE ARTICLES
+define('LOCAL_TEMPLATE', './template/'); // LOCATION OF THE TEMPLATES
+define('LOCAL_HOOKS', './hooks/'); // LOCATION OF THE HOOKS
+define('FILE_KEYWORDS', './keywords.txt'); // LOCATION OF THE KEYWORDS FILE
+define('FILE_BOTS', './ips.txt'); // LOCATION OF THE BOT LIST FILE
+// DEFINE CLOAKING LEVEL
+define('CLOAKING_LEVEL', '4');
+// -- 0 = ALWAYS CLOAK
+// -- 1 = OFTEN CLOAK
+// -- 2 = SOMETIMES CLOAK
+// -- 3 = RARELY CLOAK
+// -- 4 = NEVER CLOAK
+define('INDENT', true); // INDENT THE HTML CODE
+// -- true = INDENT THE HTML CODE
+// -- false = DO NOT INDENT
+define('PROXY', false); // USE PROXY
+// -- true = USE A PROXY FOR ALL THE SCRAPING
+// -- false = DO NOT USE A PROXY
+define('PROXY_IP', '127.0.0.1'); // PROXY IP
+define('PROXY_PORT', '8080'); // PROXY PORT
+
+
+////////////////////////////////////////////////////////////////////
+///////////////////////////// OPTIONAL /////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+// GOOGLE ADSENSE HOOK
+define('GOOGLE_ADSENSE_PUBID', 'pub-XXXXXXXXXXXXXX'); // GOOGLE ADSENSE PUB_ID
+define('GOOGLE_ADSENSE_ADCHANNEL', 'XXXXXXXXXXXXXX'); // GOOGLE ADSENSE CHANNEL
+// PEAKCLICK HOOK
+define('PEAKCLICK_AFF', 'XXXX'); // PEAKCLICK AFFILIATE ID
+define('PEAKCLICK_SUBAFF', ''); // PEAKCLICK SUBAFFILIATE ID
+define('PEAKCLICK_THUMBS', true); // SET TO DISPLAY OR NOT THUMBNAILS
+// -- true = DISPLAY THUMBNAILS
+// -- false = NO THUMBNAILS
+// UMAX HOOK
+define('UMAX_AFF', 'xxxxx'); // UMAX AFFILIATE ID
+define('UMAX_SUBAFF', 'xxxx'); // UMAX SUBAFFILIATE ID
+// AUCTION ADS HOOK
+define('AUCTIONADS_ADCLIENT', 'xxxx'); // AUCTIONADS ADCLIENT
+define('AUCTIONADS_ADCAMPAIGN', 'xxxx'); // AUCTIONADS ADCAMPAIGN
+// GOOGLE ANALYTICS HOOK
+define('GOOGLE_ANALYTICS_ACCOUNT', 'XXXXXXXXXXX'); // GOOGLE ANALYTICS ACCOUNT NUMBER
+// STATCOUNTER HOOK
+define('STATCOUNTER_PROJECT', 'XXXXXXXXX'); // PROJECT NUMBER
+define('STATCOUNTER_PARTITION', 'XX'); // PARTITION NUMBER
+define('STATCOUNTER_SECURITY', 'XXXXXX'); // SECURITY NUMBER
+// BOOKMARKING HOOK
+define('DIGG', true); // DIGG.COM
+define('DELICIOUS', true); // DEL.ICIO.US
+define('REDDIT', true); // REDDIT.COM
+define('TECHNORATI', true); // TECHNORATI.COM
+define('FURL', true); // FURL.NET
+define('ASK', true); // ASK.COM
+define('GOOGLE', true); // GOOGLE.COM
+define('YAHOO', true); // MYWEB2.SEARCH.YAHOO.COM
+?>

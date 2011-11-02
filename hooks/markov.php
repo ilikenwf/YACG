@@ -1,58 +1,65 @@
-<?php //MARKOV CHAINS HOOK
-// Place all your articles in .txt format in your /articles folder
-// Usage: markov();
-// markov(5, 200); -> Print an article of 200 words with a granularity of 5
+<?php // MARKOV CHAINS HOOK
 if (DEBUG == false) {
 	error_reporting(0);
 }
-function markov($gran = '5', $num = '200') {
+function markov($gran = 5, $num = 200, $letters_line = 65, $return = false) {
+	$combo = "";
+	$output = "";
 	if (is_dir(LOCAL_ARTICLES)) {
 		if ($dh = opendir(LOCAL_ARTICLES)) {
 			while (($file = readdir($dh)) !== false) {
 				if ($file == "." || $file == ".." || empty($file)) {
 					$my_dump[] = $file;
 				} elseif (substr($file,  - 4) == '.txt') {
-					$combo .= file_get_contents(LOCAL_ARTICLES.$file);
-				}
-				if ($i >= $nr_files) {
-					$i = 0;
-				} elseif ($i < $nr_files) {
-					++$i;
+					$combo .= @file_get_contents(LOCAL_ARTICLES.$file);
 				}
 			}
 			closedir($dh);
 		}
 	}
-	$combo = utf8_encode($combo);
-	$combo = htmlentities($combo);
+	if (is_dir("../".LOCAL_ARTICLES."")) {
+		if ($dh = opendir("../".LOCAL_ARTICLES."")) {
+			while (($file = readdir($dh)) !== false) {
+				if ($file == "." || $file == ".." || empty($file)) {
+					$my_dump[] = $file;
+				} elseif (substr($file,  - 4) == '.txt') {
+					$combo .= @file_get_contents("../".LOCAL_ARTICLES.$file);
+				}
+			}
+			closedir($dh);
+		}
+	}
 	$combo = preg_replace('/\s\s+/', ' ', $combo);
 	$combo = preg_replace('/\n|\r/', '', $combo);
-	$G = $gran;
-	$O = $num;
-	$output = "";
-	$combo = $combo;
-	$LETTERS_LINE = 65;
-	$textwords = array();
+	$combo = strip_tags($combo);
+	$combo = htmlentities($combo);
+	$combo = explode(".",$combo);
+	shuffle($combo);
+	$combo = implode(".", $combo);
 	$textwords = explode(" ", $combo);
-	$loopmax = count($textwords) - ($G - 2) - 1;
+	$loopmax = count($textwords) - ($gran - 2) - 1;
 	$frequency_table = array();
 	for ($j = 0; $j < $loopmax; $j++) {
 		$key_string = "";
-		$end = $j + $G;
+		$end = $j + $gran;
 		for ($k = $j; $k < $end; $k++) {
 			$key_string .= $textwords[$k].' ';
 		}
-		$frequency_table[$key_string] .= $textwords[$j + $G]." ";
+		$frequency_table[$key_string] = '';
+		$frequency_table[$key_string] .= $textwords[$j + $gran]." ";
+		if (($j+$gran) > $loopmax ) {
+			break;
+		}
 	}
 	$buffer = "";
 	$lastwords = array();
-	for ($i = 0; $i < $G; $i++) {
+	for ($i = 0; $i < $gran; $i++) {
 		$lastwords[] = $textwords[$i];
 		$buffer .= " ".$textwords[$i];
 	}
-	for ($i = 0; $i < $O; $i++) {
+	for ($i = 0; $i < $num; $i++) {
 		$key_string = "";
-		for ($j = 0; $j < $G; $j++) {
+		for ($j = 0; $j < $gran; $j++) {
 			$key_string .= $lastwords[$j]." ";
 		}
 		if ($frequency_table[$key_string]) {
@@ -62,24 +69,29 @@ function markov($gran = '5', $num = '200') {
 			$r = mt_rand(1, $c) - 1;
 			$nextword = $possible[$r];
 			$buffer .= " $nextword";
-			if (strlen($buffer) >= $LETTERS_LINE) {
+			if (strlen($buffer) >= $letters_line) {
 				$output .= $buffer;
 				$buffer = "";
 			}
-			for ($l = 0; $l < $G - 1; $l++) {
+			for ($l = 0; $l < $gran - 1; $l++) {
 				$lastwords[$l] = $lastwords[$l + 1];
 			}
-			$lastwords[$G - 1] = $nextword;
-		} else {
+			$lastwords[$gran - 1] = $nextword;
+		} 
+		else {
 			$lastwords = array_splice($lastwords, 0, count($lastwords));
-			for ($l = 0; $l < $G; $l++) {
+			for ($l = 0; $l < $gran; $l++) {
 				$lastwords[] = $textwords[$l];
 				$buffer .= ' '.$textwords[$l];
 			}
 		}
 	}
-
-	print trim($output);
+	$output = trim($output);
+	if ($return == true) {
+		return $output;
+	}
+	else {
+		print $output;
+	}
 }
-
 ?>
