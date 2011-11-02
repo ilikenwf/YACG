@@ -1,22 +1,21 @@
-<?php //CONFIG FILE
-
+<?php
 ////////////////////////////////////////////////////////////////////
 //////////////////////////// YACG CONFIGURATION ////////////////////
 ////////////////////////////////////////////////////////////////////
 
-$version = '3.03'; // [YACG] Yet Another Content Generator Version
+$version = '3.5.2'; // [YACG] Yet Another Content Generator Version
 
 // FOOTPRINTS
 define('DEBUG', true); // true/false - VERBOSE ERROR OUTPUT/NO ERROR OUTPUT
-define('ROOT_DIR', './renamethisfolder/'); // ROOT FOLDER NAME
+define('ROOT_DIR', './rootfolder/'); // ROOT FOLDER NAME
 
 // URL CONFIGURATION
-define('FILE_EXT', '.html'); // FILE EXTENSION TO ADD TO THE URLS
-define('PERMALINK', 'blog/'); // CUSTOM PERMALINKS
+define('FILE_EXT', ''); // FILE EXTENSION TO ADD TO THE URLS
+define('PERMALINK', ''); // CUSTOM PERMALINKS
 // -- Examples:
-// -- /2008/01/20/
-// -- /pages/
-// -- /wp-content/
+// -- 2008/01/20/
+// -- pages/
+// -- wp-content/
 // CATEGORIES
 define('CATEGORIES', true); // SPLIT KEYWORDS INTO CATEGORIES
 define('CAT_NUM', '6'); // IF KEYWORDS ARE NOT CATEGORIZED, AUTOMATICALLY SPLIT INTO 'CAT_NUM' CATEGORIES(false - random, between 5 and 15)
@@ -24,7 +23,7 @@ define('CAT_NUM', '6'); // IF KEYWORDS ARE NOT CATEGORIZED, AUTOMATICALLY SPLIT 
 // SITE PROPERTIES
 define('SITE_NAME', 'Your Site'); // SITE NAME
 define('SITE_DESCRIPTION', 'Your description'); // DESCRIPTION OF YOUR SITE
-$pages = array('sitemap','contact-us'); //SITE PAGES
+$pages = array('contact'); //SITE PAGES
 define('PASSWORD', '12345'); // ADMIN PASSWORD
 define('EMAIL', 'your@email.com'); // ADMIN EMAIL (FOR CONTACT-US.PHP)
 define('FILEMODE', 0777); //DEFAULT FILE MODE
@@ -41,15 +40,15 @@ define('DAILY_MIN', '3'); // AT LEAST THIS MUCH KEYWORDS WILL BE ADDED EACH DAY
 define('DAILY_MAX', '10'); // BUT NO MORE THAN THAT
 // CACHE CONTROL
 define('CACHE', false); // true/false - CACHING ON/OFF
-define('CACHE_AUTO', false); // CACHE PAGES AS THEY ARE BEING ADDED TO THE KEYWORDS.TXT('START_KEYS' SHOULD BE SET FOR THIS TO WORK)
-define('CACHE_TIME', '15552000'); // CACHE EXPIRE TIME (IN SECONDS)
+define('CACHE_AUTO', true); // CACHE PAGES AS THEY ARE BEING ADDED TO THE KEYWORDS.TXT('START_KEYS' SHOULD BE SET FOR THIS TO WORK)
+define('CACHE_TIME', '31104000'); // CACHE EXPIRE TIME (IN SECONDS)
 define('LOCAL_IMAGE_CACHE', './img/'); // LOCATION OF THE IMAGE CACHE(E.G. FOR FLICKR HOOK)
 define('INDENT', true); // true/false - INDENT/DON'T INDENT THE HTML CODE
 
 // HOOKS
 define('PICK_HOOKS', false); // SET TO TRUE TO LOAD ONLY HOOKS YOU NEED
 $hooks = array('google_adsense.php', 'articles_table.php', 'markov.php', 'wikipedia.php', 'social_bookmarking.php', 'flickr.php', 'youtube.php'); // ONLY THESE HOOKS WILL BE LOADED IF 'PICK_HOOKS' IS TRUE
-define('FEED_HOOK', 'markov'); // USE CACHED OUTPUT OF THIS HOOK TO GENERATE RSS FEED EXCERPTS
+define('PREVIEW_HOOK', 'markov'); // USE CACHED OUTPUT OF THIS HOOK TO GENERATE PAGE DESCRIPTION TAG, PAGE EXCERPTS AND RSS FEED
 
 // DEFINE CLOAKING LEVEL
 define('CLOAKING_LEVEL', '4'); // 0/1/2/3/4 - ALWAYS CLOAK/OFTEN CLOAK/SOMETIMES CLOAK/RARELY CLOAK/NEVER CLOAK
@@ -84,31 +83,24 @@ define('FLICKR_API', false); // FLICKR API
 define('YAHOO_API', 'YahooDemo'); // YAHOO API
 
 // GOOGLE ADSENSE HOOK
-define('GOOGLE_ADSENSE_PUBID', 'pub-XXXXXXXXXXXXXX'); // GOOGLE ADSENSE PUB_ID
-define('GOOGLE_ADSENSE_ADCHANNEL', 'XXXXXXXXXXXXXX'); // GOOGLE ADSENSE CHANNEL
+define('GOOGLE_ADSENSE_PUBID', 'pub-xxxxxxxxxxxxxx'); // GOOGLE ADSENSE PUB_ID
+define('GOOGLE_ADSENSE_ADCHANNEL', 'xxxxxxxxxxxxxx'); // GOOGLE ADSENSE CHANNEL
+// CLICKBANK HOOK
+define('CLICKBANK_ID', 'xxxxx'); // CLICKBANK ID
 // PEAKCLICK HOOK
-define('PEAKCLICK_AFF', 'XXXX'); // PEAKCLICK AFFILIATE ID
-define('PEAKCLICK_SUBAFF', ''); // PEAKCLICK SUBAFFILIATE ID
-define('PEAKCLICK_THUMBS', true); // true/false - DISPLAY/DON'T DISPLAY THUMBNAILS
+define('PEAKCLICK_AFF', 'xxx'); // PEAKCLICK AFFILIATE ID (5-digit number, check it here: stats.peakclick.com/index.php?ac=fu)
+define('PEAKCLICK_SUBAFF', '1'); // PEAKCLICK SUBAFFILIATE ID
 // UMAX HOOK
 define('UMAX_AFF', 'xxxxx'); // UMAX AFFILIATE ID
 define('UMAX_SUBAFF', 'xxxx'); // UMAX SUBAFFILIATE ID
+define('UMAX_AUTH', 'xxx'); // UMAX AUTHORIZATION KEY(https://www.umaxlogin.com/user_links_code.php)
 // AUCTION ADS HOOK
 define('AUCTIONADS_ADCLIENT', 'xxxx'); // AUCTIONADS ADCLIENT
 define('AUCTIONADS_ADCAMPAIGN', 'xxxx'); // AUCTIONADS ADCAMPAIGN
 // GOOGLE ANALYTICS HOOK
-define('GOOGLE_ANALYTICS_ACCOUNT', 'XXXXXXXXXXX'); // GOOGLE ANALYTICS ACCOUNT NUMBER
+define('GOOGLE_ANALYTICS_ACCOUNT', 'xxxxxxxxxxx'); // GOOGLE ANALYTICS ACCOUNT NUMBER
 // STATCOUNTER HOOK
-define('STATCOUNTER_PROJECT', 'XXXXXXXXX'); // PROJECT NUMBER
-define('STATCOUNTER_PARTITION', 'XX'); // PARTITION NUMBER
-define('STATCOUNTER_SECURITY', 'XXXXXX'); // SECURITY NUMBER
-// BOOKMARKING HOOK
-define('DIGG', true); // DIGG.COM
-define('DELICIOUS', true); // DEL.ICIO.US
-define('REDDIT', true); // REDDIT.COM
-define('TECHNORATI', true); // TECHNORATI.COM
-define('FURL', true); // FURL.NET
-define('ASK', true); // ASK.COM
-define('GOOGLE', true); // GOOGLE.COM
-define('YAHOO', true); // MYWEB2.SEARCH.YAHOO.COM
+define('STATCOUNTER_PROJECT', 'xxxxxxxxx'); // PROJECT NUMBER
+define('STATCOUNTER_PARTITION', 'xx'); // PARTITION NUMBER
+define('STATCOUNTER_SECURITY', 'xxxxxx'); // SECURITY NUMBER
 ?>
