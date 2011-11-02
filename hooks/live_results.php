@@ -5,6 +5,10 @@ if (DEBUG == false) {
 	error_reporting(0);
 }
 function live($keyword = THIS_PAGE_KEYWORD, $items = '5') {
+	$title = "";
+	$link = "";
+	$description = "";
+	$cow = "";
 	$feed = @file_get_contents(LOCAL_CACHE.str_replace(" ", "-", $keyword).".MSN");
 	if ($feed == false) {
 		$feed = fetch('http://search.msn.com/results.aspx?q='.urlencode($keyword).'&format=rss&FORM=RSNR');
@@ -32,9 +36,9 @@ function live($keyword = THIS_PAGE_KEYWORD, $items = '5') {
 				$description[$counter][1] = str_replace("&apos;", "'", $description[$counter][1]);
 
 				if ($cow < $items) {
-					$live .= "\n"."<h2>".$title[$counter][1]."</h2>";
+					$live .= "\n"."<h3>".$title[$counter][1]."</h3>";
 					$live .= "\n"."<p>".$description[$counter][1]."</p>";
-					$live .= "\n"."<p style=\"text-align:right;\"><a href=\"".$link[$counter][1]."\" rel=\"external nofollow\">Read more...</a><hr /></p>";
+					$live .= "\n"."<p style=\"text-align:right;\"><a href=\"".$link[$counter][1]."\" rel=\"external nofollow\">Read more...</a></p>";
 				}
 				$cow++;
 			}

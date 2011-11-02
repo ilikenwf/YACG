@@ -5,7 +5,8 @@ if (DEBUG == false) {
 	error_reporting(0);
 }
 function youtube($keyword = THIS_PAGE_KEYWORD) {
-	$url = 'http://www.youtube.com/rss/tag/'.urlencode($keyword).'.rss';
+	$y = "";
+	$url = 'http://www.youtube.com/rss/tag/'.str_replace(" ", "-", $keyword).'.rss';
 	$youtube = @file_get_contents(LOCAL_CACHE.str_replace(" ", "-", $keyword).".YOUTUBE");
 	if ($youtube == false) {
 		$youtube = fetch($url);
@@ -20,10 +21,11 @@ function youtube($keyword = THIS_PAGE_KEYWORD) {
     	$video .= "\n".'</object>';
     	$video .= "\n";
     	print $video;
-	} else {
-	if (DEBUG == true) {
-		echo "Nothing was found!";
+	} 
+	else {
+		if (DEBUG == true) {
+			echo "Nothing was found!";
 		}
 	}
-	}
+}
 ?>

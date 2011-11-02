@@ -61,7 +61,7 @@ a:visited{color:#0000FF}
   </tr>
   <tr>
     <td width="30%"><h3><a href="http://www.syndk8.net/forum/index.php/board,136.0.html"></a></h3></td>
-    <td width="70%"><strong>Please visit Syndk8.net forums for support </strong></td>
+    <td width="70%"><strong><a href="http://getyacg.com">Click here to get support :) </a></strong></td>
   </tr>
   <tr>
     <td colspan="2"><h3><a href="logout.php">Logout</a></h3></td>

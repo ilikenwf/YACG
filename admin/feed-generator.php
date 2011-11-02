@@ -1,6 +1,5 @@
 <?php //FEED GENERATOR
 require_once("functions.php"); 
-
 $cookpass = $_COOKIE["yacg"];
 $adminpass = md5($adminpass);
 if($cookpass) {

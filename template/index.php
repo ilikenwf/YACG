@@ -1,102 +1,56 @@
+<? print '<?xml version="1.0" encoding="utf-8" ?>'."\n" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <? metakeywords(); ?>
-	<? metadescription(); ?>
-    <? titletag(); ?>
-    <link rel="stylesheet" href="<? template(); ?>style.css" type="text/css" media="all" />
+<? metakeywords() ?>
+<? //metadescription() ?>
+<? title() ?>
+<link href="<? template(); ?>style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-	<div class="content">
-		<div class="header_top"></div>
-		<div class="header">
-			<div class="sf_right">
-				<div id="nav">
-    				<ul>
-      					<li id="current"><a href="<? domain(); ?>" title="Home">Home</a></li>
-      					<li><a href="<? domain(); ?>sitemap" title="Sitemap">Sitemap</a></li>
-					</ul>
-				</div>
-				<div class="sf_search">
-					<form method="post" action="#">
-						<p><b>Search:</b> <input type="text" name="search" class="search" alt="input" /> <input type="submit" value="Go" class="submit" /></p>
-					</form>
-				</div>
-			</div>
-			<div class="sf_left">
-				<h1><a href="<? domain(); ?>" title="<? keyword(); ?>"><? keyword(); ?></a></h1>
-			</div>
+<div id="wrapper">
+  <div id="content">
+    <div id="header">
+      <div id="logo">
+        <h1><? sitename() ?></h1>
+        <h4>everything right here</h4>
+      </div>
+      <div id="links">
+        <ul>
+          <li><a href="<? domain() ?>" title="<? sitename() ?>">Home</a></li>
+          <li><a href="contact-us" title="Contact Us">Contact Us</a></li>
+          <li><a href="sitemap" title="Sitemap">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="mainimg">
+      <h3>everything</h3>
+      <h4>right here </h4>
+    </div>
+    <div id="contentarea">
+      <div id="leftbar">
+  	  	<div id="padding-left">
+			<h2>what is this site?</h2>
+			<p>Welcome to Article-O-Matic! In this site you will find everything about anything you want. Please feel free to visit the <a href="sitemap">sitemap</a> to see all our articles. You can also drop us a line by clicking <a href="contact-us">here</a>.</p><br /><p> Enjoy your stay ;)</p>
+			<br />
+        	<h2>recent articles </h2>
+			<? table() ?>
 		</div>
-		<div class="header_bottom"></div>
-		<div class="header_top"></div>
-		<div class="header">
-			<p style="text-align: center">
-<? adsense('728x90_as', 'FFFFFF', 'FFFFFF', '0E4D8B', '454545', '454545'); ?>
-</p>
+	  </div>
+      <div id="rightbar">
+   	  	<div id="padding-right">
+	        <h2>more articles </h2>
+			<p><? links('10', 'DESC') ?></p>
 		</div>
-		<div class="header_bottom"></div>
-		<div class="header_top"></div>
-		<div class="left">
-			<div class="left_side">
-				<div class="box_top">
-					<h2>Menu</h2>
-				</div>	
-				<div class="box">
-<p>
-<? adsense('120x90_0ads_al_s', 'FFFFFF', 'FFFFFF', '0E4D8B', '454545', '454545'); ?>
-</p>
-<span class="navtitle">More!</span><br />
-<p class="navitem"><? links('10', 'RAND'); ?>
-</p>			
-
-				</div>
-
-				<div class="box_bottom"></div>
-			</div>
-			<div class="right_side">
-				<div class="article">
-					<h2><? keyword(); ?></h2>
-					<h3>Last update: <? echo date('l dS \of F Y'); ?></h3>
-				<div>
-				<? markov(); ?>
-
-</div><br />
-<div><? youtube(); ?></div>
-<div><? yahooimg(); ?></div>
-				</div>
-				<div class="grey_top"></div>
-				<div class="grey">
-<? live(); ?>
+      </div>
+    </div>
+    <div id="bottom">
+      <div id="email"><span>&copy; 2006–2007 <a href="<? domain() ?>" title="<? sitename() ?>"><? sitename() ?></a></span></div>
+       <div id="validtext">
+        <p>Valid <a href="http://validator.w3.org/check?uri=referer" title="XHTML Valid">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer" title="CSS Valid">CSS</a> &mdash; <a href="sitemap" title="Sitemap">Sitemap</a></p>
+      </div>
+    </div>
+  </div>
 </div>
-			</div>
-		</div>	
-		<div class="right">
-			<div class="box_top">
-				<h2>Related links</h2>
-			</div>	
-			<div class="box">			
-				<p style="text-align:center">
-<? adsense('120x600_as', 'FFFFFF', 'FFFFFF', '0E4D8B', '454545', '454545'); ?></p>
-			</div>
-			<div class="box_bottom"></div>
-			
-			
-			<div class="box_top">
-				<h2>Links:</h2>
-			</div>	
-			<div class="box">			
-				<p><a href="#">Link</a><br />
-				</p>
-			</div>
-			<div class="box_bottom"></div>
-		</div>
-		<div class="header_bottom"></div>
-		<div class="footer">
-			<p><a href="#" title="Privacy Policy">Privacy Policy</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer" title="CSS Validator">CSS</a> and <a href="http://validator.w3.org/check?uri=referer" title="XHTML Validator">XHTML</a><br />
-			&copy; Copyright <? echo date("Y"); ?> <? domain(); ?></p>
-		</div>
-	</div>
-<? analytics(); ?>
 </body>
 </html>

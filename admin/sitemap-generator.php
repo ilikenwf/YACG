@@ -9,12 +9,13 @@ if($cookpass) {
 $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
 $sitemap .= "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 $sitemap .= "\n" . '<url>';
-$sitemap .= "\n" . '<loc>http://'.THIS_DOMAIN.'/'.'sitemap.html</loc>';
+$sitemap .= "\n" . '<loc>http://'.THIS_DOMAIN.'/'.'sitemap</loc>';
 $sitemap .= "\n" . '<lastmod>'.date(DATE_W3C).'</lastmod>';
 $sitemap .= "\n" . '</url>';
 
 $keywords = @file("../".FILE_KEYWORDS."");
 array_shift($keywords);
+$num = "";
 	if($num==null) $num = 999999999;{
 		$array_size = count($keywords)-$num;
 		if($array_size > 0) for($c=0; $c < $array_size; $c++) array_pop($keywords);	

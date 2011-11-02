@@ -6,6 +6,8 @@ if (DEBUG == false) {
 	error_reporting(0);
 }
 function markov($gran = '5', $num = '200') {
+	$i = "";
+	$nr_files = "";
 	if (is_dir(LOCAL_ARTICLES)) {
 		if ($dh = opendir(LOCAL_ARTICLES)) {
 			while (($file = readdir($dh)) !== false) {

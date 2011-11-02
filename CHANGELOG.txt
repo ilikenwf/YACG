@@ -1,6 +1,31 @@
 # [YACG] Yet Another Content Generator CHANGELOG
-# http://getyacg.com
+# Official Site: http://getyacg.com
+# Black Hat SEO Blog: http://busin3ss.name
 # by busin3ss [at] gmail [dot] com
+
+1.9b ** BETA RELEASE **
+
+	- Added Umax hook
+	- Fixed yet another bug in the cloaking hook
+	- Added support for keywords with any cApItAlIzAtIoN
+	- Added new hook - table()
+	- Added XHTML sitemap generator
+	- Added contact-us.php
+	- Fixed nasty header bug regarding no-cache
+	- Fixed bug with trailing slash
+	- Added some ajax to default template (web 2.0)
+	- New metatags hook
+	- Deleted metatags.php
+	- New wikipedia hook
+	- New flickr hook
+	- Renamed titletag() to title()
+	- Removed code in index.php and main.php
+	- Added SITE_NAME variable and sitename() function
+	- Changed the links() function to seem more natural
+	- Added support link in control panel
+	- Self installing
+	- New default template
+	- Fixed ips.txt bug
 
 1.1
 	- Finally fixed all bugs related to markov chains!

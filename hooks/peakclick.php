@@ -44,7 +44,7 @@ function peakclick($keyword = THIS_PAGE_KEYWORD, $items = 5) {
 
 		if (!substr_count(join('', $lines), 'ERROR:')) {
 			if (count($lines)) {
-				foreach($lines as $line_num => $line) {
+				foreach($lines as $line) {
 					$result = explode('|', $line);
 					$tur = explode('/', str_replace('https://', '', $result[3]));
 					$targetUrlReal = $tur[0];

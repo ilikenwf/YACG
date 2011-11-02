@@ -1,6 +1,7 @@
 <?php //ADMIN FUNCTIONS
 require_once("../config.inc.php");
-
+$i = "";
+$nr_files = "";
 // PASSWORD PROTECT STUFF
 $adminpass = PASSWORD; 
 $not_logged_in = "
@@ -26,7 +27,7 @@ if(FOLDER == true){
 	$domain_name	= $_SERVER['HTTP_HOST'];
 }
 if(DOMAIN_TYPE == true){
-	if(preg_match("/www\./", $domain_name)) : 
+	if(preg_match("/www./", $domain_name)) : 
 	define('THIS_DOMAIN', $domain_name); 
 	else: 
 		ignore_user_abort(true);

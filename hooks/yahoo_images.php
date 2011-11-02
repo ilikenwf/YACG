@@ -13,6 +13,7 @@ $url = 'http://api.search.yahoo.com/ImageSearchService/V1/imageSearch?appid=Yaho
 		$yahooimg = fetch($url);
 		savedata($yahooimg, $keyword.".YAHOOIMG");
 	}
+	$y = "";
 	$i = '';
 	$n = '1';
 	$yahooimg = fetch($url);

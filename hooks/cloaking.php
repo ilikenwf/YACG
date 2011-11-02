@@ -1,7 +1,6 @@
 <?php //IPCLOACK
 // Thanks to http://iplists.com and rjonesx from Syndk8.net
-require_once("mainhook.php");
-
+require_once("main.php");
 if (DEBUG == false) {
 	error_reporting(0);
 }
@@ -22,7 +21,7 @@ if($lastupdated != date("Ymd")) {
 		$opt .= fetch($list);
 	}
 	$opt = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $opt);
-	$fp =  fopen("../".FILE_BOTS."","w");
+	$fp =  fopen(FILE_BOTS,"w");
 	fwrite($fp,$opt);
 	fclose($fp);
 }
@@ -37,8 +36,7 @@ $class = $exp[0].'.'.$exp[1].'.'.$exp[2].'.';
 $threshold = LEVEL;
 
 // PERFORM CLOAK CHECKS
-if (stristr($host, "googlebot") && stristr($host, "inktomi") && stristr($host,
-	"msn")) {
+if (stristr($host, "googlebot") && stristr($host, "inktomi") && stristr($host, "msn")) {
 	$cloak++;
 }
 
