@@ -2,7 +2,9 @@
 // Usage: wikipedia(); -> Prints Wikipedia's article of the page main keyword in plain text format (English)
 // wikipedia('Google','en','0'); -> Prints Wikipedia's article of Google in plain text format (English)
 // wikipedia('Google','es','1'); -> Prints Wikipedia's article of Google in html with format (Spanish)
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function wikipedia($keyword = THIS_PAGE_KEYWORD, $language = 'en', $type = '1')	{
 	$pattern[0] = '/<a href="(.*?)">(.*?)<\\/a>/';
 	$replace[0] = '$2';
@@ -66,10 +68,49 @@ function wikipedia($keyword = THIS_PAGE_KEYWORD, $language = 'en', $type = '1')	
 	if ($type == "1") {
 		if (preg_match("/<\!-- start content --\>(.*)<table id=\"toc\" class=\"toc\" summary=\"(.*)\">/", $wikipedia, $w)) {
 			$wikipedia = $w[1];
-		} else {
-			$wikipedia = '';
-			print'No Wikipedia was found!';
-		}
+		} elseif (preg_match("/<\!-- start content --\>(.*)<a name=\"Section_name1\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	          }
+		} elseif (preg_match("/<\!-- start content --\>(.*)<a name=\"Section_name2\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	  }
+		} elseif (preg_match("/<\!-- start content --\>(.*)<a name=\"Section_name3\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	  }
+		} elseif (preg_match("/<\!-- start content --\>(.*)<a name=\"Section_name4\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	  }
+		} elseif (preg_match("/<\!-- start content --\>(.*)<div class=\"boilerplate metadata\" id=\"stub\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	  }
+		} elseif (preg_match("/<\!-- start content --\>(.*)<div class=\"printfooter\">/is",$wikipedia,$w)) {
+		  $wikipedia = $w[1];
+		  $wikipedia = @trim(preg_replace($pattern, $replace, preg_replace('/\n/', '',preg_replace('/\s\s+/', ' ', $wikipedia))));
+		  preg_match('/(.+?)<table id="toc"(.+?)<\/table>(.*)/s',$wikipedia,$w);
+		  if ($w[1]!=""){
+			$wikipedia=$w[1].$w[3];
+    	  }
+		  }
 	}
 	 else {
 		if (preg_match('/\<\!-- start content --\>(.+?)\<\!-- end content --\>/',$wikipedia, $w)) {
@@ -92,8 +133,14 @@ function wikipedia($keyword = THIS_PAGE_KEYWORD, $language = 'en', $type = '1')	
 			}
 		} else {
 			$wikipedia = '';
-			print'No Wikipedia was found!';
-		}
+ 			if (DEBUG == true) {
+				echo "Nothing was found!";
+				}
+			}
+	}
+	$size = strlen($wikipedia);
+	if ($size > 10000) {
+	$wikipedia = substr($wikipedia, 0, 10000);
 	}
 	print $wikipedia;
 }

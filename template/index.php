@@ -59,7 +59,7 @@
 					<h2><? keyword(); ?></h2>
 					<h3>Last update: <? echo date('l dS \of F Y'); ?></h3>
 				<div>
-				<? wikipedia(); ?>
+				<? markov(); ?>
 
 </div><br />
 <div><? youtube(); ?></div>
@@ -67,7 +67,7 @@
 				</div>
 				<div class="grey_top"></div>
 				<div class="grey">
-<? live(); ?>				
+<? live(); ?>
 </div>
 			</div>
 		</div>	

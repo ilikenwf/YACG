@@ -1,21 +1,39 @@
 <?php //IPCLOACK
 // Thanks to http://iplists.com and rjonesx from Syndk8.net
+require_once("mainhook.php");
 
-/*require_once("admin/ip-update.php");
-$timestamp = filemtime("./ips.txt");
+if (DEBUG == false) {
+	error_reporting(0);
+}
+if (!LEVEL == 4) {
+$timestamp = filemtime(FILE_BOTS);
 $lastupdated = date("Ymd",$timestamp);
-if($lastupdated!=date("Ymd")) {
-$server = "http://" . $_SERVER['SERVER_NAME'];
-}*/
+if($lastupdated != date("Ymd")) {
+	$lists = array(
+	'http://spiders.wphost.info/google.txt',
+	'http://spiders.wphost.info/inktomi.txt',
+	'http://spiders.wphost.info/lycos.txt',
+	'http://spiders.wphost.info/msn.txt',
+	'http://spiders.wphost.info/altavista.txt',
+	'http://spiders.wphost.info/askjeeves.txt',
+	'http://spiders.wphost.info/wisenut.txt',
+	);
+	foreach($lists as $list) {
+		$opt .= fetch($list);
+	}
+	$opt = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $opt);
+	$fp =  fopen("../".FILE_BOTS."","w");
+	fwrite($fp,$opt);
+	fclose($fp);
+}
 // GET DOMAIN NAME AND OTHER VALUABLE INFORMATION
 $ip = $_SERVER["REMOTE_ADDR"];
 $ref = $_SERVER['HTTP_REFERER'];
 $agent = $_SERVER['HTTP_USER_AGENT'];
 $host = strtolower(gethostbyaddr($ip));
-$file = implode(" ", file("./ips.txt"));
+$file = implode(" ", file(FILE_BOTS));
 $exp = explode(".", $ip);
 $class = $exp[0].'.'.$exp[1].'.'.$exp[2].'.';
-
 $threshold = LEVEL;
 
 // PERFORM CLOAK CHECKS
@@ -42,5 +60,5 @@ if ($cloak >= $threshold) {
 } else {
 	$cloakdirective = 0;
 }
-
+}
 ?>

@@ -57,14 +57,14 @@
 				<div class="article">
 					<h2><? keyword(); ?></h2>
 					<h3>Last update: <? echo date('l dS \of F Y'); ?></h3>
-<div><? flickr(); ?><? //yahooimg(); ?></div>
+<div><? flickr(); ?><? yahooimg(); ?></div>
 <div style="clear:both"><p><? wikipedia(); ?></p></div>
 
 
 				</div>
 				<div class="grey_top"></div>
 				<div class="grey">
-<? live(); ?>				
+<? digg(); ?>				
 				</div>
 			</div>
 		</div>	

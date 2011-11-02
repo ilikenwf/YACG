@@ -1,5 +1,7 @@
 <?php //BASIC FUNCTIONS
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function give404($page) {
 	header("HTTP/1.0 404 Not Found");
 	header("Connection: close");
@@ -24,8 +26,10 @@ function perm($path) {
 	$configmod = substr(sprintf('%o', fileperms($path)),  - 4);
 	if ($configmod == '0777'){}
 	 else {
+	 	if (DEBUG == true) {
 		echo'Error with <strong>'.$path.'</strong>. Please chmod -c 777 this
 	file/directory!';
+		}
 		die();
 	}
 }
@@ -88,10 +92,20 @@ function links($items = '', $ord = 'RAND') {
 	}
 
 function fetch($url) {
-	$snoop = new Snoopy;
-	$snoop->agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1)Gecko/20061010 Firefox/2.0';
-	$snoop->fetch($url);
-	return $snoop->results;
+	if (function_exists('curl_exec')) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1)Gecko/20061010 Firefox/2.0');
+		return curl_exec($ch);
+		curl_close($ch);
+	}
+	else {
+		$snoop = new Snoopy;
+		$snoop->agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1)Gecko/20061010 Firefox/2.0';
+		$snoop->fetch($url);
+		return $snoop->results;
+		}
 	}
 
 function domain() {

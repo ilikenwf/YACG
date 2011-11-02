@@ -1,9 +1,13 @@
 <?php //KEYWORD CLEANER
 // Thanks to BlackMamba and deregular for the code
 // Original contribution -> http://www.syndk8.net/forum/index.php/topic,2497.0
+require_once("functions.php"); 
 
-require_once("admin-hooks.php"); 
-require_once("../config.inc.php");
+$cookpass = $_COOKIE["yacg"];
+$adminpass = md5($adminpass);
+if($cookpass) {
+    if($cookpass == $adminpass){
+
 if(isset($_GET['save'])){
 	$keywordy = $_POST['keywords'];
 	$keywordum = explode("\n",$keywordy);
@@ -104,5 +108,14 @@ else{
 	echo "</form>";
 	echo "<br /><br /></td></tr></table>";
 }
+}
+}
+else{
+    echo($incorrect_password);
+    die();
+    }
+}
+else{
+echo($not_logged_in);
 }
 ?>

@@ -3,7 +3,9 @@
 // Usage: adsense($ad_format, $color_border, $color_bg, $color_link, $color_url, $color_text);
 // adsense('468x60_as'); -> Prints a 468x60_as ad unit with the default colors
 // adsense('468x60_as', 'FFFFFF', 'FFFFFF', '1480CD', '000000', '000000'); -> Prints a 468x60_as ad unit with custom colors
-			
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function adsense($ad_format, $color_border="FFFFFF", $color_bg="FFFFFF", $color_link="1480CD", $color_url="000000", $color_text="000000"){
 	$ad = '';
 	if (GOOGLE_SHOW_ADS == 1) {

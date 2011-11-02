@@ -2,7 +2,9 @@
 // Place all your articles in .txt format in your /articles folder
 // Usage: markov();
 // markov(5, 200); -> Print an article of 200 words with a granularity of 5
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function markov($gran = '5', $num = '200') {
 	if (is_dir(LOCAL_ARTICLES)) {
 		if ($dh = opendir(LOCAL_ARTICLES)) {
@@ -21,10 +23,14 @@ function markov($gran = '5', $num = '200') {
 			closedir($dh);
 		}
 	}
-	$combo = utf8_encode($combo);
+	//$combo = utf8_encode($combo);
 	$combo = htmlentities($combo);
 	$combo = preg_replace('/\s\s+/', ' ', $combo);
 	$combo = preg_replace('/\n|\r/', '', $combo);
+$chickenfeet=explode(".",$combo);
+	shuffle($chickenfeet);
+	$combo="";
+	$combo=implode(".",$chickenfeet);
 	$G = $gran;
 	$O = $num;
 	$output = "";
@@ -79,5 +85,4 @@ function markov($gran = '5', $num = '200') {
 
 	print trim($output);
 }
-
 ?>

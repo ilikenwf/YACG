@@ -1,7 +1,6 @@
 <?php //UPDATE IP LIST OF BOTS
-// If you inted to use this script regulary buy the maintainer of the lists a drink at http://yacg.wphost.infobmad/
+require_once("functions.php"); 
 
-require_once("admin-hooks.php"); 
 $lists = array(
 	'http://spiders.wphost.info/update.php',
 	'http://spiders.wphost.info/google.txt',
@@ -19,7 +18,7 @@ foreach($lists as $list) {
 	}
 
 $opt = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $opt);
-$fp =  fopen("../ips.txt","w");
+$fp =  fopen("../".FILE_BOTS."","w");
 fwrite($fp,$opt);
 fclose($fp);
 echo "Done! Your <strong>Bot List</strong> has been updated!";

@@ -1,7 +1,9 @@
 <?php //LIVE.COM RESULTS SCRAPER
 // Usage: live(); -> Prints 5 results about the main page keyword
 // live('Google','10'); -> Prints 10 results about the keyword Google
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function live($keyword = THIS_PAGE_KEYWORD, $items = '5') {
 	$feed = @file_get_contents(LOCAL_CACHE.str_replace(" ", "-", $keyword).".MSN");
 	if ($feed == false) {
@@ -15,8 +17,10 @@ function live($keyword = THIS_PAGE_KEYWORD, $items = '5') {
 
 	$nr = count($title);
 	if ($nr == 1) {
-		echo"No Live Results were found!";
-	} elseif ($nr > 1) {
+		if (DEBUG == true) {
+			echo "Nothing was found!";
+		}	
+		} elseif ($nr > 1) {
 	  $live = '';
 		for ($counter = 1; $counter < 11; $counter++) {
 			if (empty($title[$counter][1])) {

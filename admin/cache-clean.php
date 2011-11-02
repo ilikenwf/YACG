@@ -1,8 +1,12 @@
 <?php //DELETE ALL FILES IN THE CACHE FOLDER
 // Thanks to ngkong from Syndk8.net for the idea/code
+require_once("functions.php");
 
-require_once("../config.inc.php");
-
+$cookpass = $_COOKIE["yacg"];
+$adminpass = md5($adminpass);
+if($cookpass) {
+    if($cookpass == $adminpass){
+	
 $cdir = realpath("../".LOCAL_CACHE."");
 
 if ($handle = opendir($cdir)) {
@@ -19,4 +23,13 @@ unlink($f2);
 echo "Done! All files in the cache folder were deleted!";
 echo "<br />";
 echo "<a href=\"javascript:history.go(-1)\">Go back</a>";
+}
+    else{
+    echo($incorrect_password);
+    die();
+    }
+}
+else{
+echo($not_logged_in);
+}
 ?>

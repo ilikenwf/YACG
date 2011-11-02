@@ -1,8 +1,10 @@
 <?php //FLICKR SCRAPER
 // Usage: flickr(); -> Prints 8 images from Flickr about the main page keyword
 // flickr('Google','10'); -> Prints 10 images from Flickr about Google
-
-function flickr($keyword = THIS_PAGE_KEYWORD, $items = '8') {
+if (DEBUG == false) {
+	error_reporting(0);
+}
+function flickr($keyword = THIS_PAGE_KEYWORD, $items = '8', $thumb = true) {
 	$url = 'http://www.flickr.com/services/feeds/photos_public.gne?tags='.urlencode($keyword).'&format=rss_200';
 	$flickr = @file_get_contents(LOCAL_CACHE.str_replace(" ", "-", $keyword).	".FLICKR");
 	if ($flickr == false) {
@@ -42,11 +44,16 @@ function flickr($keyword = THIS_PAGE_KEYWORD, $items = '8') {
 				$filename2 = basename(preg_replace($pattern2, $replace2, $f[1][$n]));
 				$newfile2 = @file_get_contents(LOCAL_CACHE.$filename2);
 				if ($newfile2 == false) {
+				if ($thumb == true) {
+					$newfile2 = fetch(preg_replace($pattern1, $replace1, $f[1][$n]));
+					}
+				else {
 				$newfile2 = fetch(preg_replace($pattern2, $replace2, $f[1][$n]));
+				}
 				savedata($newfile2, $filename2);
 				}
 				$flickr .= "\n".'<a href="'.LOCAL_CACHE.$filename2.'">';
-		  		$flickr .= "\n".'<img src="'.LOCAL_CACHE.$filename1.'" alt="' . $keyword . '" width="75px" height="75px" class="thumbnail" /></a>';
+		  		$flickr .= "\n".'<img src="'.LOCAL_CACHE.$filename1.'" alt="' . $keyword . '" width="75px" height="75px" /></a>';
 				$n++;
 				$n++;	
 				$i++;
@@ -55,7 +62,10 @@ function flickr($keyword = THIS_PAGE_KEYWORD, $items = '8') {
 		$flickr .= "\n";
 		print $flickr;
 		}
-	else echo "No Flickr was found!";
+	else {
+	 	if (DEBUG == true) {
+		echo "Nothing was found!";
+		}
 	}
-	
+	}
 ?>

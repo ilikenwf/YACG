@@ -1,7 +1,9 @@
 <?php //METATAGS HOOK
 // Usage: metakeywords(); -> Prints <meta name="keywords"... for the current page
 // metadescription(); -> Prints <meta name="description"... for the current page
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function metakeywords($keyword=THIS_PAGE) {
 	$keywords = @file_get_contents(FILE_KEYWORDS);
 	$keywords = explode("\n", $keywords);

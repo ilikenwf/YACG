@@ -1,0 +1,102 @@
+# [YACG] Yet Another Content Generator CHANGELOG
+# http://getyacg.com
+# by busin3ss [at] gmail [dot] com
+
+1.1
+	- Finally fixed all bugs related to markov chains!
+	- Fixed admin password bug
+	- Added e_d's markov hook
+	- Turned OFF cloaking until it works
+	- Fixed bug in hooks/cloaking.php
+	- Removed direct links from the admin panel
+	- Removed update checker
+
+1.0
+	- Fixed bug in FILE_BOTS and index.php
+	- Fixed bug in sitemap-generator.php and feed-generator.php with folder installs
+	- Reformatted index.php and config.inc.php
+	- Rewritten the Yahoo! Images hook
+	- Removed more fingerprints recently discovered
+	- Added $thumb option to Flickr hook - Default is to display only thumbnails. If you change it to 'true' it will fetch the original size images
+	- Finally cURL support. [YACG] will automatically choose between cURL and snoopy.class.php - Now [YACG] should work in a lot more hosts!
+	- Added version checker to admin control panel
+	- Automatically trim huge wikipedia articles
+	- Added a Digg.com scraper (Thanks to emonk)
+	- Fixed nasty bug for folder installations
+	- Template system - Renamed results.php to page.php for easier customization
+	- Cleaned and fixed all the admin files
+	- Added FILE_BOTS option to config.php
+	- Added a dull (0kb) index.php to all folders to avoid Directory Listing
+	- Added spaces in the Wikipedia HTML to make code look less spammy
+	- Improved the wikipedia hook for better and cleaner results
+	- Removed the "No flickr/wikipedia/youtube" error - No more fingerprints (I hope so!)
+	- Fixed the bot list update - Now everything is automatic!
+	- Removed Pingoat from the pinger
+	- Password protected the admin control panel with a cookie
+	- Added DEBUG MODE to YACG (Show or hide all errors) 
+   
+0.9
+	- Improved the badkeywords.txt file
+	- Added line-breaks to all the hooks so the code looks less spammy
+	- Removed /includes/
+	- Rewrited index.php and config.inc.php
+	- Deprecated TEMPLATE_FORMAT
+	- Deprecated htmlentities(), ucwords() & uctolower()
+	- Deprecated CACHE_FORMAT
+	- Added more "cleaning" to Wikipedia hook
+	- Now Yahoo! Images hook caches images and stops on image not found
+	- Now Flickr hook caches images and stops on image not found
+	- Changed MSN News hook to Live Search Results hook
+	- Added a check for keywords.txt in index.php (Now the script is n00b safe!)
+	- Added a Keyword cleaner in the admin section (To remove adult and other "bad keywords" from your keywords.txt - Thanks to BlackMamba and deregular for the original code!)
+	- Added Yahoo! Images scraper (Thanks to ua3nbw for the code!)
+	- Added option for cURL instead of snoopy.class.php in main.php
+	- Removed some code regarding snoopy.class.php
+	- Added a "permission checker" in the index.php
+	- Removed .html from sitemap
+	- Fixed sitemap-generator.php (Updated according to sitemaps.org)
+	- Fixed Peakclick hook
+	- Fixed MSN News hook
+
+0.1
+
+	- Added a keyword.txt checker
+	- Changed all include() and include_once() for require_once()
+	- Fixed all the administrative hooks
+	- Now the index.php urlencode() all the requests (Avoids the script to break when users request a page with symbols)
+	- Fixed feed generator problem with orbs()
+	- Added define('LOCAL_ARTICLES', './articles/'); in the config.inc.php
+	- Added a script to clear cache (Thanks to ngkong for the idea/code)
+	- Added a primitive Control Panel
+	- Removed "-" from keyword()
+	- Added Creative Commons License to [YACG] Yet Another Content Generator
+	- Updated all the comments of the hooks
+	- Deprecated the getkeywords(), $page_keyword, THIS_PAGE and $return keywords (Added a "main keyword" for each page)
+	- Added "keyword sanitization" in the index.php
+	- Added a "main keyword" for each page
+	- Added default values to all the hooks
+	- Changed <? to <?php, fixed extra spaces, names of the hooks and comments on the hooks
+	- Fixed double slash bug (Thanks to ngkong for the fix)
+	- Added release version in /config.inc.php
+	- Added cloacking configuration to /config.inc.php
+	- Basic IP + Referer + User-Agent + DNS-Host Cloaking Solution (Thanks to rjonesx - http://www.syndk8.net/forum/index.php/topic,7864.0.html)
+	- Fix to work in subdirectories (Thanks to type-v - http://www.syndk8.net/forum/index.php/topic,7518.0.html)
+	- Added Google AdSense hook and it's configuration variables in /config.inc.php
+	- Added Auto Metatags hook (meta-keywords & meta-description)
+	- Added a Youtube Scraper hook (hooks/youtube.php)
+	- Fixed and improved Markov Chains (Much better results!)
+	- UTF-8 everything
+	- Added a Google & Yahoo Sitemap Generator (admin/sitemap-generator.php)
+	- Fixed capitalization issues (Now your sites look less spammy and more user friendly!)
+	- Fixed a zillion of bugs
+	- Changed everything to XHTML 1.1
+	- Lowecase all the functions for easy customization (SaveData() to savedata() etc...)
+	- Changed the zip file structure
+	- Added Peakclick hook
+	- Added fecth() function (Download an url with snoopy)
+	- Added Wikipedia scraper
+	- Added Google Analytics hook
+	- Added Flickr hook
+	- New Template!
+	- Added title="" attribute to all links
+	- Clean URL's (Removed the .html of all urls)

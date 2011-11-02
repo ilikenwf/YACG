@@ -2,7 +2,9 @@
 // Configure your AFFILIATE ID / SUBAFFILIATE ID at the config file
 // Usage: peakclick(); Prints 5 results from Peakclick with the main page keyword
 // peakclick('Google', 10); -> Prints 10 results from Peakclick with the keyword 'Google'
-
+if (DEBUG == false) {
+	error_reporting(0);
+}
 function peakclick($keyword = THIS_PAGE_KEYWORD, $items = 5) {
 
 	$url = 'http://feed.peakclick.com/res.php?aff='._AFF.'&subaff='._SUBAFF.($keyword != '' ? '&keyword='.urlencode($keyword): '').'&num='.$items.'&ip='._IP;
@@ -54,10 +56,14 @@ function peakclick($keyword = THIS_PAGE_KEYWORD, $items = 5) {
 					}
 				}
 			} else {
-				echo'No Peakclick was found!';
+				 	if (DEBUG == true) {
+						echo "Nothing was found!";	
+					}
 			}
 		} else {
-			echo'Error (wrong IP?)';
+			if (DEBUG == true) {
+				echo "Error (Wrong IP?)";
+			}
 		}
 	}
 }
