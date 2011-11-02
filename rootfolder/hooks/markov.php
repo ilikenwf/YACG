@@ -27,12 +27,12 @@ function markov($gran = 5, $num = 200, $letters_line = 65, $content = false) {
   $loopmax = count($textwords) - ($gran - 2) - 1;
   $frequency_table = array();
   for ($j = 0; $j < $loopmax; $j++) {
-    $key_string = "";
+    $key_string = " ";
     $end = $j + $gran;
     for ($k = $j; $k < $end; $k++) {
       $key_string .= $textwords[$k].' ';
     }
-    $frequency_table[$key_string] = '';
+    $frequency_table[$key_string] = ' ';
     $frequency_table[$key_string] .= $textwords[$j + $gran]." ";
     if (($j+$gran) > $loopmax ) {
       break;
@@ -45,7 +45,7 @@ function markov($gran = 5, $num = 200, $letters_line = 65, $content = false) {
     $buffer .= " ".$textwords[$i];
   }
   for ($i = 0; $i < $num; $i++) {
-    $key_string = "";
+    $key_string = " ";
     for ($j = 0; $j < $gran; $j++) {
       $key_string .= $lastwords[$j]." ";
     }
@@ -58,7 +58,7 @@ function markov($gran = 5, $num = 200, $letters_line = 65, $content = false) {
       $buffer .= " $nextword";
       if (strlen($buffer) >= $letters_line) {
         $output .= $buffer;
-        $buffer = "";
+        $buffer = " ";
       }
       for ($l = 0; $l < $gran - 1; $l++) {
         $lastwords[$l] = $lastwords[$l + 1];
@@ -74,6 +74,6 @@ function markov($gran = 5, $num = 200, $letters_line = 65, $content = false) {
     }
   }
   $output = trim($output);
-  print $output;
+  echo $output;
 }
 ?>

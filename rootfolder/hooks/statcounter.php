@@ -1,6 +1,6 @@
 <?php // STATCOUNTER HOOK
 function statcounter() {
-	print "\n<script type=\"text/javascript\">\n
+	echo "\n<script type=\"text/javascript\">\n
 	var sc_project=".STATCOUNTER_PROJECT.";\n
 	var sc_invisible=1;\n
 	var sc_partition=".STATCOUNTER_PARTITION.";\n

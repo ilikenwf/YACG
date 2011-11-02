@@ -13,16 +13,27 @@ function cb($keyword = THIS_PAGE_CATEGORY, $numresults = 3, $gendescr = true, $t
       $result[$i]['description'] = $matches[3][$i];
       $result[$i]['thumbnail'] = '';
       if ($thumbs || $gendescr) {
-        $salespage = fetch($matches[1][$i]);
+        $ch = curl_init();
+      	curl_setopt($ch, CURLOPT_URL, $matches[1][$i]);
+      	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      	curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
+      	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
+      	if (!ini_get('open_basedir') && !ini_get('safe_mode')) {
+      		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+      		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+      	}
+      	if (PROXY) curl_setopt($ch, CURLOPT_PROXY, PROXY_IP.":".PROXY_PORT);
+      	$salespage = curl_exec($ch);
         if ($thumbs) {
-          foreach($snoopy->headers as $header) {
-            if (preg_match("/Location: http:\/\/(.+?)[\?\/].*?hop=0/im", $header, $location)) {
+            if (preg_match("/http:\/\/(.+?)[\?\/].*?hop=0/im", curl_getinfo($ch, CURLINFO_EFFECTIVE_URL), $location)) {
               $thumb = googleimg($location[1], 1, true);
               $result[$i]['thumbnail'] = $thumb[0]['thumbnail'];
-              break;
+              
             }
-          }
+          
         }
+        curl_close($ch);
+        
         if ($gendescr) {
           if (preg_match("/<meta[^>]+?[\"']description[\"'][^>]+?content=[\"]([^\"]+?)[\"]/im", $salespage, $description) && strlen($description[1]) > 150) {
             $result[$i]['description'] = $description[1];
@@ -39,9 +50,9 @@ function cb($keyword = THIS_PAGE_CATEGORY, $numresults = 3, $gendescr = true, $t
 
     if (!$bare) {
       foreach($result as $ad) {
-        print '<div style="margin:5px"><a href="'.$ad['url'].'">'.$ad['title'].'</a><br />';
-        if ($thumbs) print '<div style="float:left;margin:5px"><a href="'.$ad['url'].'"><img src="'.$ad['thumbnail'].'" /></a></div>';
-        print $ad['description'].'<br style="clear:both"></div>';
+        echo '<div style="margin:5px"><a href="'.$ad['url'].'">'.$ad['title'].'</a><br />';
+        if ($thumbs) echo '<div style="float:left;margin:5px"><a href="'.$ad['url'].'"><img src="'.$ad['thumbnail'].'" /></a></div>';
+        echo $ad['description'].'<br style="clear:both"></div>';
       }
       $result = true;
     }

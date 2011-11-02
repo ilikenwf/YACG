@@ -43,7 +43,7 @@ function auctionads($keyword = THIS_PAGE_KEYWORD, $ad_format = '250x250', $color
 				$ad_height = "160";
 				break;
 		}
-		print '<script type="text/javascript"><!--
+		echo '<script type="text/javascript"><!--
 auctionads_ad_client = "'.AUCTIONADS_ADCLIENT.'";
 auctionads_ad_campaign = "'.AUCTIONADS_ADCAMPAIGN.'";
 auctionads_ad_width = "'.$ad_width.'";

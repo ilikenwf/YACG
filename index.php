@@ -2,199 +2,175 @@
 header('Content-Type: text/html;charset=utf-8');
 //GETTING/SETTING CONFIGURATION OPTIONS
 require_once './config.inc.php';
-if (!defined('THIS_DOMAIN')) define('THIS_DOMAIN', str_replace(array('www.', '/index.php'), '', $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']));
-
-error_reporting(DEBUG ? E_ALL^E_NOTICE : 0);
-ignore_user_abort(true);
-set_time_limit(0);
-clearstatcache();
-
-// REQUIRE MAIN HOOK
-require_once LOCAL_HOOKS.'main.php';
-//REQUIRE SIMPLEPIE
-require_once ROOT_DIR.'includes/simplepie.inc';
-
-/* UTF-8 SETTINGS */
-if (UTF) {
-  require_once ROOT_DIR.'includes/utf8/utf8.php';
-  //TRANSLITERATE OR TREAT EVERYTHING AS UNICODE
-  if (TRANSLIT) {
-    require_once UTF8.'/utils/ascii.php';
-    require_once UTF8.'/utf8_to_ascii.php';
-  } else
-    $utfre = 'u';
-}
-define('UTFRE', $utfre);
-/* */
-
-// GET KEYWORD FILES
-$keywords = @file_get_contents(FILE_KEYWORDS);// GET KEYWORDS
-$categories = CATEGORIES ? @file_get_contents(FILE_CATEGORIES) : '';// GET CATEGORIES
-
-/* PERFORM PERMISSIONS AND KEYWORD FILE INTEGRITY CHECKS IF IN DEBUG MODE */
-if (DEBUG) {
-  $files = array('./config.inc.php', './feed.xml', './sitemap.xml', ROOT_DIR, LOCAL_CACHE, LOCAL_IMAGE_CACHE, FILE_KEYWORDS);
-  if (PHP_SHLIB_SUFFIX != 'dll')
-    foreach ($files as $file) perm($file);
-  if ($keywords == false) die('<strong>Error - <em>keywords.txt</em> doesn\'t exist</strong>');
-  $re = UTF ? "/[^\p{L}\p{N}\w\s\',]/u" : "/[^\w\s\',]/";
-  if (preg_match($re, $keywords)) die('<strong>Error - <em>keywords.txt</em> can only contain letters &amp; numbers</strong>');
-  if (preg_match("/,/", $keywords) && preg_match("/^[^,]+?$/ims", $keywords)) die('<strong>Error - <em>keywords.txt</em> can only contain letters &amp; numbers</strong>');
-  $start_time = gettime();
-}
-/* */
-
-// BUILD CATEGORIES LIST(DONE ONLY ON FIRST LAUNCH)
-if (CATEGORIES && !file_exists(FILE_CATEGORIES)) {
-	$keywords_list = array_map('trim', explode("\n", $keywords));
-	$cats = strip_keys($keywords_list);
-	if (count($cats) <= 1) {
-    $catcount = CAT_NUM ? CAT_NUM : rand(5, 15);
-    $cats = array_slice($keywords_list, 0, $catcount);
-    $keywords = array_slice($keywords_list, $catcount);
-    for ($i=0; $i < count($keywords); $i++)
-      $keywords[$i] = $cats[rand(0, $catcount-1)].','.$keywords[$i];
-    $keywords = implode("\n", $keywords);
-    file_put_contents(FILE_KEYWORDS, $keywords);
-    @chmod(FILE_KEYWORDS, FILEMODE);
-  }
-  $categories = implode("\n", $cats);
-  file_put_contents(FILE_CATEGORIES, $categories);
-  if (UTF && TRANSLIT) {
-    $categories = TRANSLIT_ADVANCED ? utf8_to_ascii($categories) : utf8_accents_and_strip($categories);
-    file_put_contents(FILE_CATEGORIES_TR, $categories);
-  }
-}
-
-// ADD DAILY DOSE OF KEYWORDS
-if (START_KEYS && (filemtime(FILE_KEYWORDS) < time() - 86400 || !file_exists(FILE_KEYWORDS_TMP))) {
-  $keywordstmp = @file_get_contents(FILE_KEYWORDS_TMP);
-  if (!file_exists(FILE_KEYWORDS_TMP)) {
-    $keywordstmp_list = array_map('trim', explode("\n", $keywords));
-    $keyarr = sliceandsave($keywordstmp_list, array(), START_KEYS);
-    @chmod(FILE_KEYWORDS_TMP, FILEMODE);
-    $keywords = $keyarr[0];
-    $keywordstmp = $keyarr[1];
-  } elseif ($keywordstmp != '') {
-    $keywordstmp_list = explode("\n", $keywordstmp);
-    $keywords_list = explode("\n", $keywords);
-    $keyarr = sliceandsave($keywordstmp_list, $keywords_list, rand(DAILY_MIN, DAILY_MAX));
-    $keywords = $keyarr[0];
-    $keywordstmp = $keyarr[1];
-  }
-  if (isset($keyarr)) {
-    // UPDATE RSS FEED AND SITEMAP
-    $adminurl = 'http://'.THIS_DOMAIN.'/'.str_replace('./', '', ROOT_DIR).'admin/';
-    fetch($adminurl.'feed-generator.php?password='.PASSWORD, false);
-    fetch($adminurl.'sitemap-generator.php?password='.PASSWORD, false);
-    fetch($adminurl.'pinger.php?password='.PASSWORD, false);
-  }
-}
-
-// REPLACE KEYWORDS AND CATEGORIES VARS WITH TRANSLITERATED COUNTERPARTS
-if (UTF && TRANSLIT) {
-  //UPDATE KEYWORDS.TR.TXT
-  if (filemtime(FILE_KEYWORDS_TR) <= filemtime(FILE_KEYWORDS)) {
-    $keywords = TRANSLIT_ADVANCED ? utf8_to_ascii($keywords) : utf8_accents_and_strip($keywords);
-    file_put_contents(FILE_KEYWORDS_TR, $keywords);
-  }
-  $keywords = file_get_contents(FILE_KEYWORDS_TR);
-  $categories = @file_get_contents(FILE_CATEGORIES_TR);
-}
-
-// GET KEYWORDS AND CATEGORIES ARRAYS FOR HOOKS
-$keyarr = file(FILE_KEYWORDS);
-$keyarr = array_map('rtrim', $keyarr);
-$catarr = @file(FILE_CATEGORIES);
-$catarr = @array_map('rtrim', $catarr);
+//SITE DOMAIN
+define('THIS_DOMAIN', 'http://'.str_replace(array('www.', '/index.php'), '', $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']));
 //ABSOLUTE URL OF THE CURRENT PAGE
 define('THIS_PAGE_URL', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
-//EXTRACT CATEGORY AND/OR KEYWORD FROM URL
-$urlparts = explode("?", $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-$urlparts = array_values(array_filter(explode('/', rmdashes(str_replace(array('www.', THIS_DOMAIN, PERMALINK, FILE_EXT), '', $urlparts[0])))));
+error_reporting(DEBUG ? E_ALL^E_NOTICE : 0);
+clearstatcache();
 
-/* SELECT THE RIGHT PAGE AND SET 'THIS_PAGE_KEYWORD' */
-$parts = count($urlparts);
+//REQUIRE MAIN HOOK
+require_once LOCAL_HOOKS.'main.php';
+
+//UTF-8 SETTINGS
+if (UTF) {
+  require_once ROOT_DIR.'includes/utf8/utf8.php';
+  require_once UTF8.'/utils/ascii.php';
+  require_once UTF8.'/utf8_to_ascii.php';
+  define('UTFRE', 'u');
+} else {
+	define('UTFRE', '');
+}
+
+if (DEBUG) {
+  //PERMISSIONS CHECK
+  if (PHP_SHLIB_SUFFIX != 'dll') foreach (array('./config.inc.php', './feed.xml', './sitemap.xml', ROOT_DIR, LOCAL_CACHE, LOCAL_IMAGE_CACHE, FILE_KEYWORDS) as $file) perm($file);
+  //START TIMER
+  $start_time = gettime();
+}
+
+//BUILD CATEGORIES LIST ON FIRST LAUNCH
+if (CATEGORIES && !file_exists(FILE_CATEGORIES)) {
+  $categories = array();
+  $keyhandle = fopen(FILE_KEYWORDS, "r");
+  
+  $data = fgetcsv($keyhandle, 1000, ",");
+  $categories[] = $data[0]."\n";
+  
+  if (count($data) > 1) {
+    while (($data = fgetcsv($keyhandle, 1000, ",")) !== false) if (isset($data[1])) $categories[] = $data[0]."\n";
+    $categories = array_unique($categories);
+  } else {
+    $keywords = array();
+    $catcount = CAT_NUM ? CAT_NUM : rand(5, 15);
+    for($i=0;$i<$catcount-1;$i++) $categories[] = fgets($keyhandle, 1000);
+    while (!feof($keyhandle)) $keywords[] = rtrim($categories[rand(0, $catcount-1)]).','.fgets($keyhandle, 1000);
+    file_put_contents(FILE_KEYWORDS, implode('', $keywords));
+    @chmod(FILE_KEYWORDS, FILEMODE);
+  }
+  
+  fclose($keyhandle);
+  
+  $categories = rtrim(implode('', $categories));
+  file_put_contents(FILE_CATEGORIES, $categories);
+  if (UTF) file_put_contents(FILE_CATEGORIES_TR, utf8_to_ascii($categories));
+  
+  //FIND PREVIEW_HOOK
+  if (FIND_PREVIEW_HOOK) {
+    $page = file_get_contents(LOCAL_TEMPLATE.'page.php');
+    if (preg_match("/cache(\s*[\"'](.+?)[\"'])/ims", $page, $previewhook)) {
+      $config = file_get_contents('./config.inc.php');
+      $config = preg_replace("/^define\(\s*?'PREVIEW_HOOK'\s*?,\s*'(.+?)'\s*?\);(.*?)$/im", "define('PREVIEW_HOOK', '".$previewhook[1]."');\\2", $config);
+      file_put_contents('./config.inc.php', $config);
+    }
+  }
+}
+
+//ADD KEYWORDS
+if (START_KEYS && filemtime('./config.inc.php') < time() - UPDATE_INTERVAL) {
+  $newkeys = rand(NEW_MIN, NEW_MAX);
+  
+  $config = file_get_contents('./config.inc.php');
+  $config = preg_replace("/^define\(\s*?'START_KEYS'\s*?,\s*'(.+?)'\s*?\);(.*?)$/im", "define('START_KEYS', '".(START_KEYS+$newkeys)."');\\2", $config);
+  file_put_contents('./config.inc.php', $config);
+  
+  if (CACHE && CACHE_AUTO) for($i=count($keyarr)-1;$i>count($keyarr)-$newkeys;$i--) fetch(k2url($keyarr[$i]));
+}
+
+$catarr = @array_map('rtrim', @file(FILE_CATEGORIES));
+if (UTF && CATEGORIES) $catarrtr = @array_map('rtrim', @file(FILE_CATEGORIES_TR));
+$keyarr = array();
 $category = false;
-//print_r($urlparts);exit;
 
-if (!preg_match(UTF ? "/[^\p{L}\p{N}\w\s\']/u" : "/[^\w\s\']/", implode('', $urlparts))) {
-  //IT'S CATEGORY PAGE
-  if ($parts == 2 && $urlparts[0] == 'category' && preg_match("/^".$urlparts[1]."$/im".UTFRE, $categories)) {
+//GET IMPORTANT PARTS OF THE URL
+$urlparts = explode("?", THIS_PAGE_URL);
+$urlparts = array_values(array_map('urldecode', array_filter(explode('/', rmdashes(str_replace(array('www.', THIS_DOMAIN, PERMALINK, FILE_EXT), '', $urlparts[0]))))));
+$parts = count($urlparts);
+
+//BUILD $keyarr AND DETERMINE IF ANY PAGE IS BEING ACCESSED
+$keyhandle = fopen(FILE_KEYWORDS, "r");
+$i = 0;
+while($i < START_KEYS && ($data = fgetcsv($keyhandle, 1000, ",")) !== false) {
+  $keyarr[] = implode(',', $data);
+  
+  if (UTF) $data[(isset($data[1]) ? 1 : 0)] = utf8_to_ascii($data[(isset($data[1]) ? 1 : 0)]);
+  
+  if ($parts == 1 && strcasecmp($urlparts[0], (isset($data[1]) ? $data[1] : $data[0])) == 0) {
+    define('THIS_PAGE', 'page.php');
+    define('THIS_PAGE_KEYWORD', cut_cat($keyarr[$i]));
+    $category = isset($data[1]) ? $data[0] : 'Uncategorized';
+  }
+  
+  $i++;
+}
+fclose($keyhandle);
+
+//IF IT'S NOT A KEYWORD PAGE
+if (!defined('THIS_PAGE')) {
+  //IT'S THE HOMEPAGE
+  if ($parts == 0) {
+    define('THIS_PAGE', 'index.php');
+    define('THIS_PAGE_KEYWORD', SITE_NAME);
+  }
+  //IT'S A CATEGORY PAGE
+  elseif ($parts == 2 && $urlparts[0] == 'category' && ($i = array_isearch($urlparts[1], (UTF ? $catarrtr: $catarr))) !== false) {
     define('THIS_PAGE', 'category.php');
     define('THIS_PAGE_KEYWORD', 'Category');
-    $category = ( UTF && TRANSLIT && $i = array_isearch($urlparts[1], explode("\n", $categories)) ) ? $catarr[$i] : ucwords($urlparts[1]);
+    $category = $catarr[$i];
   }
-  //IT'S REGULAR PAGE
-  elseif ( $parts == 1 && preg_match("/^".(CATEGORIES ? '(.+?),' : '').$urlparts[0]."$/im".UTFRE, $keywords, $cat) ) {
-    define('THIS_PAGE', 'page.php');
-    define('THIS_PAGE_KEYWORD', ( UTF && TRANSLIT && $i = array_isearch($urlparts[0], strip_cats(explode("\n", $keywords))) ) ? cut_cat($keyarr[$i]) : ucwords($urlparts[0]));
-    $category = ( UTF && TRANSLIT && $i = array_isearch($cat[1], explode("\n", $categories)) ) ? $catarr[$i] : ucwords($cat[1]);
-  }
-  //IT'S ARCHIVE PAGE
+  //IT'S AN ARCHIVE PAGE
   elseif ($parts == 2 && preg_match("/^\d+$/", implode('', $urlparts))) {
     define('THIS_PAGE', 'archive.php');
     define('THIS_PAGE_KEYWORD', 'Archive');
     $category = strtotime($urlparts[0].'-'.$urlparts[1].'-01');
   }
   //IT'S SOME PAGE FROM $pages ARRAY
-  elseif ($parts == 1 && in_array(adashes($urlparts[0]), $pages)) {
-    define('THIS_PAGE', adashes($urlparts[0].'.php'));
-    define('THIS_PAGE_KEYWORD', ucfirst($urlparts[0]));
+  elseif ($parts == 1 && ($i = array_isearch(adashes($urlparts[0]), $pages)) !== false) {
+    define('THIS_PAGE', adashes($pages[$i].'.php'));
+    define('THIS_PAGE_KEYWORD', ucfirst($pages[$i]));
   }
-  //IT'S HOMEPAGE
-  elseif ($parts == 0) {
-    define('THIS_PAGE', 'index.php');
-    define('THIS_PAGE_KEYWORD', SITE_NAME);
-  }
+  //IT'S 404 ERROR PAGE
   else {
-    $notfound = true;
-  } 
+    header("HTTP/1.0 404 Not Found");
+    define('THIS_PAGE', '404.php');
+    define('THIS_PAGE_KEYWORD', 'Page not found');
+  }
 }
-else {
-  $notfound = true;
-}
-//IT'S 404 ERROR PAGE
-if ($notfound) {
-  define('THIS_PAGE', '404.php');
-  define('THIS_PAGE_KEYWORD', 'Page not found');
-}
-define('THIS_PAGE_CATEGORY', $category);
-/* */
 
-/* LOADING TEMPLATE PAGE & CACHING */
-if (INDENT) {
-  ob_start('indenter');
-} else {
-  ob_start();
-}
+define('THIS_PAGE_CATEGORY', $category);
 
 //LOAD CACHED PAGE
 $cachefile_path = LOCAL_CACHE.str_replace(' ', '-', THIS_PAGE_KEYWORD).'.html';
 if (CACHE && THIS_PAGE == 'page.php' && file_exists($cachefile_path) && (time() - CACHE_TIME < filemtime($cachefile_path))) {  
-  print @file_get_contents($cachefile_path);
-  if (DEBUG) print "\n".'<!-- Cached on '.date('F jS, Y H:i', filemtime($cachefile_path)).' -->';
-  exit;
+  echo @file_get_contents($cachefile_path);
+  if (DEBUG) echo "\n".'<!-- Cached on '.date('F jS, Y H:i', filemtime($cachefile_path)).' -->';
 }
-// PICK HOOKS
-if (PICK_HOOKS) {
-  foreach ($hooks as $hook)
-    require_once LOCAL_HOOKS.$hook;
-} elseif ($dh = @opendir(LOCAL_HOOKS)) {
-  while (($file = readdir($dh)) !== false) 
-    if (substr($file, - 4) == '.php') require_once LOCAL_HOOKS.$file;
-  closedir($dh);
-}
-// LOAD TEMPLATE
-require_once LOCAL_TEMPLATE.THIS_PAGE;
-//SAVE THE OUTPUT
-if (INDENT) {
-  if (CACHE && THIS_PAGE == 'page.php') file_put_contents($cachefile_path, indenter(ob_get_contents()));
-} else {
-  if (CACHE && THIS_PAGE == 'page.php') file_put_contents($cachefile_path, ob_get_contents());
+//OR GENERATE PAGE
+else {
+  //LOAD HOOKS
+  require_once ROOT_DIR.'includes/simplepie.inc';
+  if (PICK_HOOKS) {
+    foreach ($hooks as $hook) require_once LOCAL_HOOKS.$hook;
+  } elseif ($dh = @opendir(LOCAL_HOOKS)) {
+    while (($file = readdir($dh)) !== false) if (substr($file, -4) == '.php') require_once LOCAL_HOOKS.$file;
+    closedir($dh);
+  }
+  
+  //LOAD TEMPLATE
+  ob_start('indenter');
+  require_once LOCAL_TEMPLATE.THIS_PAGE;
+  //SAVE THE OUTPUT
+  if (CACHE && THIS_PAGE == 'page.php') file_put_contents($cachefile_path, (INDENT == false ? ob_get_contents() :indenter(ob_get_contents())));
+
+  if (DEBUG) echo "\n".'<!-- Generated in '.(gettime() - $start_time).' seconds -->';
+  ob_flush();
 }
 
-/* */
-if (DEBUG) print "\n".'<!-- Generated in '.(gettime() - $start_time).' seconds -->';
+//PING, UPDATE RSS FEED AND SITEMAP
+if (START_KEYS && filemtime('./sitemap.xml') < time() - UPDATE_INTERVAL) {
+  ping();
+  generatefeed();
+  generatesitemap();
+}
 ?>

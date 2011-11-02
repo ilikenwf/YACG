@@ -17,8 +17,8 @@ function contact_form() {
   	}
   }
 	
-	print $result;
-  print <<<HTML
+	echo $result;
+  echo <<<HTML
     <form id="contact" method="post" action="">
       <table style="width:50%;">
         <tr>

@@ -126,15 +126,15 @@ function adsense($ad_format, $color_border="FFFFFF", $color_bg="FFFFFF", $color_
 				$ad_type = "";
 				break;
 		}
-		print "\n<script type=\"text/javascript\"><!--
+		echo "\n<script type=\"text/javascript\"><!--
 google_ad_client = \"".GOOGLE_ADSENSE_PUBID."\";
 google_ad_width = $ad_width;
 google_ad_height = $ad_height;
 google_ad_format = \"$ad_format\";";
 		if ($ad_type !== "") {
-			print "\ngoogle_ad_type = \"$ad_type\";";
+			echo "\ngoogle_ad_type = \"$ad_type\";";
 		}
-		print "\ngoogle_ad_channel =\"".GOOGLE_ADSENSE_ADCHANNEL."\";
+		echo "\ngoogle_ad_channel =\"".GOOGLE_ADSENSE_ADCHANNEL."\";
 google_color_border = \"$color_border\";
 google_color_bg = \"$color_bg\";
 google_color_link = \"$color_link\";

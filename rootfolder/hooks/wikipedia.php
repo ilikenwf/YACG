@@ -13,6 +13,8 @@ function wikipedia($keyword = THIS_PAGE_KEYWORD, $language = "en", $format = "ht
 	$replace[] = '';
 	$pattern[] = '/<dl>(.*?)<\/dl>/';
 	$replace[] = '';
+	$pattern[] = '/<script.*?>.*?<\/script>/i';
+	$replace[] = '';
 	$pattern[] = '/<h1 class="firstHeading">(.*?)<\/h1>/';
 	$replace[] = '<h3>$1</h3>';
 	$pattern[] = '/<div class="infobox sisterproject">(.*?)<\/div><\/div>/';
@@ -114,10 +116,10 @@ function wikipedia($keyword = THIS_PAGE_KEYWORD, $language = "en", $format = "ht
 				$image_file = fetch($image);
 				file_put_contents(LOCAL_IMAGE_CACHE.$image_name, $image_file);
 			}
-			$wikipedia = str_replace($image, 'http://'.THIS_DOMAIN.str_replace(array('.'), '', LOCAL_IMAGE_CACHE).$image_name, $wikipedia);
+			$wikipedia = str_replace($image, THIS_DOMAIN.str_replace(array('.'), '', LOCAL_IMAGE_CACHE).$image_name, $wikipedia);
 		}
 	}
-	print $wikipedia."\n";
+	echo $wikipedia."\n";
 }
 
 function replacer($text) {

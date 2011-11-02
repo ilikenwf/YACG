@@ -1,6 +1,6 @@
 # [YACG] Yet Another Content Generator
 # Official Site: http://getyacg.com
-# Black Hat SEO Blog: http://busin3ss.name
+# Black Hat SEO Blog: http://blackhatseo-blog.com
 # by busin3ss [at] gmail [dot] com
 
-For the documentation please go to http://getyacg.com/
+For the documentation please go to http://forums.getyacg.com/

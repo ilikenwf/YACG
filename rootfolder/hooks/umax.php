@@ -14,7 +14,7 @@ function umax($keyword = THIS_PAGE_KEYWORD, $items = 5, $bare = false) {
           if ($bare) {
             $output[] = array('title' => $ad[1], 'description' => $ad[2], 'link' => $ad[3], 'afflink' => $ad[4]);
           } else {
-            print <<<HTML
+            echo <<<HTML
 <h3><a href="{$ad[4]}">{$ad[1]}</a></h3>
 <p>{$ad[2]}</p>
 <a href="{$ad[4]}">{$ad[3]}</a>      
